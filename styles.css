@@ -50,6 +50,7 @@ nav {
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.5px;
+    z-index: 1001;
 }
 
 .nav-links {
@@ -67,6 +68,107 @@ nav {
 
 .nav-links a:hover {
     color: var(--text-primary);
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    gap: 5px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--text-primary);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    
+}
+
+/* Mobile styles */
+     @media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+        box-shadow: var(--shadow-lg);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+
+    .nav-links.active {
+        max-height: 400px;
+        padding: 1.5rem 5%;
+    }
+
+    .nav-links li {
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-links li:last-child {
+        border-bottom: none;
+    }
+
+    .nav-links.active li {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .nav-links.active li:nth-child(1) {
+        transition-delay: 0.1s;
+    }
+
+    .nav-links.active li:nth-child(2) {
+        transition-delay: 0.15s;
+    }
+
+    .nav-links.active li:nth-child(3) {
+        transition-delay: 0.2s;
+    }
+
+    .nav-links.active li:nth-child(4) {
+        transition-delay: 0.25s;
+    }
+
+    .nav-links a {
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        display: block;
+        width: 100%;
+    }
+
+    /* Simpler hamburger animation - just rotates slightly */
+    .hamburger.active span:nth-child(1) {
+        transform: translateY(8.5px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: translateY(-8.5px) rotate(-45deg);
+    }
 }
 
 section {

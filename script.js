@@ -67,13 +67,6 @@ if (bpmSlider && bpmValue) {
     });
 }
 
-// Color variables for easy customization
-const COLORS = {
-    primary: '#7C6AE6',
-    secondary: '#60A5FA',
-    background: '#FFFFFF'
-};
-
 // Resize canvas to full window
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -81,37 +74,6 @@ function resizeCanvas() {
 }
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
-
-// Create grid (add this after resizeCanvas function)
-function createGrid() {
-    const grid = document.getElementById('grid');
-    if (!grid) return;
-    
-    // Clear existing grid
-    grid.innerHTML = '';
-    
-    const gridLines = 8;
-    
-    // Horizontal lines
-    for (let i = 0; i <= gridLines; i++) {
-        const line = document.createElement('div');
-        line.className = 'grid-line-h';
-        line.style.top = `${(i / gridLines) * 100}%`;
-        grid.appendChild(line);
-    }
-    
-    // Vertical lines
-    for (let i = 0; i <= gridLines * 2; i++) {
-        const line = document.createElement('div');
-        line.className = 'grid-line-v';
-        line.style.left = `${(i / (gridLines * 2)) * 100}%`;
-        grid.appendChild(line);
-    }
-}
-
-// Call it on load and resize
-createGrid();
-window.addEventListener('resize', createGrid);
 
 // Generate realistic audio waveform data
 function generateAudioWaveform(samples, offset) {
@@ -170,7 +132,7 @@ function drawWaveform() {
     const isMobile = width < 768;
     const scale = isMobile ? height * 0.4 : height * 0.45;
     
-    // Clear canvas completely - no background blur
+    // Clear canvas completely
     ctx.clearRect(0, 0, width, height);
     
     // Generate waveform data for current frame
@@ -195,20 +157,21 @@ function drawWaveform() {
         smoothedData[i] = sum / count;
     }
     
-    // Draw the waveform as solid bars (clean Apple-like style)
+    // Draw the waveform with warm cream/beige tones
     for (let i = 0; i < width; i++) {
         const amplitude = Math.abs(smoothedData[i]);
         const barHeight = amplitude * scale;
         
-        // Color gradient from light blue to darker blue based on amplitude
+        // Intensity for gradient effect
         const intensity = Math.min(1, amplitude + 0.3);
         
-        // Blue gradient: lighter at low amplitude, darker at high
-        const r = Math.floor(96 - (intensity * 36));   // 96->60 (lighter to darker)
-        const g = Math.floor(165 + (intensity * 0));   // Stay around 165
-        const b = Math.floor(250);                      // Keep blue channel high
+        // Warm cream/beige gradient: lighter to darker based on amplitude
+        // Base color: #d4a745 (golden) fading to #c9985e (darker gold/tan)
+        const r = Math.floor(212 - (intensity * 22));   // 212->190 (golden to tan)
+        const g = Math.floor(167 - (intensity * 15));   // 167->152 
+        const b = Math.floor(69 + (intensity * 25));    // 69->94 (adding warmth)
         
-        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.85})`;
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.7})`;
         
         // Draw top half
         ctx.fillRect(i, centerY - barHeight, 1, barHeight);
@@ -217,16 +180,16 @@ function drawWaveform() {
         ctx.fillRect(i, centerY, 1, barHeight);
     }
     
-    // Draw subtle center line
-    ctx.strokeStyle = 'rgba(96, 165, 250, 0.3)';
+    // Draw subtle center line in warm tone
+    ctx.strokeStyle = 'rgba(212, 167, 69, 0.3)';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(0, centerY);
     ctx.lineTo(width, centerY);
     ctx.stroke();
     
-    // Calculate speed based on BPM (90 BPM = slower, 135 BPM = faster)
-    const bpmMultiplier = currentBPM / 120; // 120 is the base BPM
+    // Calculate speed based on BPM
+    const bpmMultiplier = currentBPM / 120;
     const samplesPerFrame = baseSamplesPerFrame * bpmMultiplier;
     
     // Increment scroll for animation
@@ -236,29 +199,3 @@ function drawWaveform() {
 }
 
 drawWaveform();
-
-
-
-//constact section
-
-      const sliders = document.querySelectorAll('.djm__fader__input');
-    
-    sliders.forEach(slider => {
-      slider.addEventListener('input', function() {
-        const channel = this.dataset.channel;
-        const value = parseInt(this.value);
-        const button = document.getElementById(`djm__button__${channel}`);
-        const led = document.getElementById(`djm__led__${channel}`);
-        const channelUnit = this.closest('.djm__channel__unit');
-        
-        if (value > 70) {
-          button.classList.add('djm__button__visible');
-          led.classList.add('djm__led__active');
-          channelUnit.classList.add('active');
-        } else {
-          button.classList.remove('djm__button__visible');
-          led.classList.remove('djm__led__active');
-          channelUnit.classList.remove('active');
-        }
-      });
-    });

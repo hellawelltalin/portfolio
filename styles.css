@@ -621,6 +621,23 @@ section {
 }
 
 /* Press photo section */
+
+/*client section*/
+.client-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.client-container h2 {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+    font-weight: 700;
+    
+}
+
+
 /* PRESS KIT SECTION */
 #pressKit {
     background: var(--bg-secondary);
